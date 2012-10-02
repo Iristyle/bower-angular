@@ -1,6 +1,6 @@
 {
   "name": "AngularJS",
-  "version": "1.0.2",
+  "version": "1.0.2-a",
   "main": [
     "./angular.js",
     "./angular-bootstrap-prettify.js",
