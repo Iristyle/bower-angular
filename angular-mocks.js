@@ -1,6 +1,6 @@
 
 /**
- * @license AngularJS v1.0.2-a
+ * @license AngularJS v1.0.3
  * (c) 2010-2012 Google, Inc. http://angularjs.org
  * License: MIT
  *
@@ -1587,20 +1587,14 @@ window.jstestdriver && (function(window) {
 })(window);
 
 
-(window.jasmine || window.mocha) && (function(window) {
-
-  var currentSpec = null;
-
-  beforeEach(function() {
-    currentSpec = this;
-  });
+window.jasmine && (function(window) {
 
   afterEach(function() {
-    var injector = currentSpec.$injector;
+    var spec = getCurrentSpec();
+    var injector = spec.$injector;
 
-    currentSpec.$injector = null;
-    currentSpec.$modules = null;
-    currentSpec = null;
+    spec.$injector = null;
+    spec.$modules = null;
 
     if (injector) {
       injector.get('$rootElement').unbind();
@@ -1622,8 +1616,13 @@ window.jstestdriver && (function(window) {
     angular.callbacks.counter = 0;
   });
 
+  function getCurrentSpec() {
+    return jasmine.getEnv().currentSpec;
+  }
+
   function isSpecRunning() {
-    return currentSpec && currentSpec.queue.running;
+    var spec = getCurrentSpec();
+    return spec && spec.queue.running;
   }
 
   /**
@@ -1648,10 +1647,11 @@ window.jstestdriver && (function(window) {
     return isSpecRunning() ? workFn() : workFn;
     /////////////////////
     function workFn() {
-      if (currentSpec.$injector) {
+      var spec = getCurrentSpec();
+      if (spec.$injector) {
         throw Error('Injector already created, can not register a module!');
       } else {
-        var modules = currentSpec.$modules || (currentSpec.$modules = []);
+        var modules = spec.$modules || (spec.$modules = []);
         angular.forEach(moduleFns, function(module) {
           modules.push(module);
         });
@@ -1718,13 +1718,13 @@ window.jstestdriver && (function(window) {
     return isSpecRunning() ? workFn() : workFn;
     /////////////////////
     function workFn() {
-      var modules = currentSpec.$modules || [];
-
+      var spec = getCurrentSpec();
+      var modules = spec.$modules || [];
       modules.unshift('ngMock');
       modules.unshift('ng');
-      var injector = currentSpec.$injector;
+      var injector = spec.$injector;
       if (!injector) {
-        injector = currentSpec.$injector = angular.injector(modules);
+        injector = spec.$injector = angular.injector(modules);
       }
       for(var i = 0, ii = blockFns.length; i < ii; i++) {
         try {
