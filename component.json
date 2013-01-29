@@ -1,6 +1,6 @@
 {
   "name": "AngularJS",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": [
     "./angular.js",
     "./angular-bootstrap-prettify.js",
@@ -11,8 +11,6 @@
     "./angular-resource.js",
     "./angular-sanitize.js",
     "./angular-scenario.js",
-    "./jstd-scenario-adapter-config.js",
-    "./jstd-scenario-adapter.js",
     "./i18n/angular-locale_am-et.js",
     "./i18n/angular-locale_am.js",
     "./i18n/angular-locale_ar-eg.js",
